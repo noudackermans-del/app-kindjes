@@ -1,4 +1,4 @@
-# Reken & Spel — app voor Julian & Lieke
+# JuLie spel — reken- en spelapp voor Julian & Lieke
 
 Een vrolijke reken- en spelapp waarmee Julian en Lieke spelenderwijs leren
 rekenen en spellen — samen met een ouder én zelfstandig. Gebouwd als **PWA**:

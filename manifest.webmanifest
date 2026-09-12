@@ -1,7 +1,7 @@
 {
-  "name": "Reken & Spel",
-  "short_name": "Reken & Spel",
-  "description": "Reken- en spelapp voor Julian en Lieke",
+  "name": "JuLie spel",
+  "short_name": "JuLie spel",
+  "description": "JuLie spel — reken- en spelapp voor Julian en Lieke",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

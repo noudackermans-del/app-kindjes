@@ -76,7 +76,8 @@ button { font-family: inherit; cursor: pointer; border: none; }
 .icon-btn:active { transform: scale(0.92); }
 
 /* ---------- Profielkeuze ---------- */
-.app-title { text-align: center; font-size: 2rem; margin: 12px 0 26px; }
+.brand { text-align: center; font-size: 1.5rem; font-weight: 800; color: var(--primary); margin-top: 8px; letter-spacing: 0.5px; }
+.app-title { text-align: center; font-size: 2rem; margin: 6px 0 26px; }
 .profile-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
 .profile-card {
   border-radius: var(--radius);

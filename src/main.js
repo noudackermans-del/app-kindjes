@@ -41,6 +41,7 @@ function showProfiles() {
   mount(
     app,
     el("div", { class: "screen profiles" }, [
+      el("div", { class: "brand", text: "JuLie spel" }),
       el("h1", { class: "app-title", text: "Wie gaat er spelen?" }),
       el("div", { class: "profile-row" }, cards),
     ])
