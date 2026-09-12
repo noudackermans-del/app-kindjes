@@ -5,13 +5,23 @@ import { getSound, setSound } from "./state.js";
 
 let dutchVoice = null;
 
+// Rustige, kindvriendelijke instellingen.
+const RATE = 0.78; // langzaam praten
+const WORD_RATE = 0.6; // losse woorden/letters nóg langzamer
+const PITCH = 1.2; // wat hoger = vriendelijker
+const GAP = 420; // pauze (ms) tussen zinsdelen, zodat woorden niet op elkaar plakken
+
 function loadVoices() {
   if (!("speechSynthesis" in window)) return;
   const voices = window.speechSynthesis.getVoices();
-  // Kies bij voorkeur een Nederlandse stem.
+  const nl = voices.filter((v) => /^nl/i.test(v.lang));
+  // Kies bij voorkeur een natuurlijke, vriendelijke (vaak vrouwelijke) NL-stem.
+  const liked = /(google|ellen|lotte|femke|claire|saskia|xander|fenna|colette)/i;
   dutchVoice =
-    voices.find((v) => /nl[-_]NL/i.test(v.lang)) ||
-    voices.find((v) => /^nl/i.test(v.lang)) ||
+    nl.find((v) => /nl[-_]NL/i.test(v.lang) && liked.test(v.name)) ||
+    nl.find((v) => liked.test(v.name)) ||
+    nl.find((v) => /nl[-_]NL/i.test(v.lang)) ||
+    nl[0] ||
     null;
 }
 
@@ -20,27 +30,59 @@ if ("speechSynthesis" in window) {
   window.speechSynthesis.onvoiceschanged = loadVoices;
 }
 
-/** Lees tekst voor in het Nederlands. */
-export function speak(text, { rate = 0.95, pitch = 1.05, onEnd } = {}) {
-  if (!getSound()) {
-    if (onEnd) onEnd();
-    return;
-  }
-  if (!("speechSynthesis" in window)) {
+// Volgnummer zodat een nieuwe speak() een lopende voorleesreeks netjes stopt.
+let speakSeq = 0;
+
+// Splits tekst in korte stukjes (op .!? of een nieuwe regel of |), zodat we
+// tussen elk stukje een duidelijke pauze kunnen laten.
+// Emoji en symbolen weghalen, die willen we niet láten uitspreken.
+const EMOJI = /[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2190}-\u{21FF}\u{2B00}-\u{2BFF}\u{FE0F}\u{200D}]/gu;
+
+function splitParts(text) {
+  return String(text)
+    .split(/(?<=[.!?])\s+|\n+|\|/)
+    .map((s) => s.replace(EMOJI, "").trim())
+    .filter(Boolean);
+}
+
+/** Lees tekst rustig voor in het Nederlands, met pauzes tussen de zinsdelen. */
+export function speak(text, { onEnd } = {}) {
+  const mySeq = ++speakSeq;
+  if (!getSound() || !("speechSynthesis" in window)) {
     if (onEnd) onEnd();
     return;
   }
   window.speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = "nl-NL";
-  if (dutchVoice) u.voice = dutchVoice;
-  u.rate = rate;
-  u.pitch = pitch;
-  if (onEnd) u.onend = onEnd;
-  window.speechSynthesis.speak(u);
+  const parts = splitParts(text);
+  let i = 0;
+
+  const next = () => {
+    if (mySeq !== speakSeq) return; // een nieuwere speak() heeft het overgenomen
+    if (i >= parts.length) {
+      if (onEnd) onEnd();
+      return;
+    }
+    const part = parts[i++];
+    const u = new SpeechSynthesisUtterance(part);
+    u.lang = "nl-NL";
+    if (dutchVoice) u.voice = dutchVoice;
+    // Losse woorden of een enkele letter extra langzaam uitspreken.
+    const words = part.replace(/[.!?]/g, "").trim().split(/\s+/);
+    u.rate = words.length <= 2 ? WORD_RATE : RATE;
+    u.pitch = PITCH;
+    const cont = () => {
+      if (mySeq === speakSeq) setTimeout(() => next(), GAP);
+    };
+    u.onend = cont;
+    u.onerror = cont;
+    window.speechSynthesis.speak(u);
+  };
+
+  next();
 }
 
 export function stopSpeaking() {
+  speakSeq++; // stopt ook een lopende voorleesreeks tussen de pauzes
   if ("speechSynthesis" in window) window.speechSynthesis.cancel();
 }
 

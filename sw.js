@@ -1,5 +1,5 @@
 // Service worker: maakt de app offline bruikbaar (cache-first voor de app-bestanden).
-const CACHE = "kindjes-v2";
+const CACHE = "kindjes-v3";
 
 const ASSETS = [
   "./",
