@@ -1,5 +1,5 @@
 // Service worker: maakt de app offline bruikbaar (cache-first voor de app-bestanden).
-const CACHE = "kindjes-v3";
+const CACHE = "kindjes-v4";
 
 const ASSETS = [
   "./",
@@ -24,6 +24,8 @@ const ASSETS = [
   "./icons/icon-maskable-512.png",
   "./icons/apple-touch-icon.png",
   "./icons/favicon-32.png",
+  "./icons/avatars/julian.png",
+  "./icons/avatars/lieke.png",
 ];
 
 self.addEventListener("install", (e) => {

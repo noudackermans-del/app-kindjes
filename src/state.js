@@ -4,8 +4,8 @@ const KEY = "kindjes:v1";
 
 /** Vaste profielen. Pas hier gerust naam/kleur/emoji/thema aan. */
 export const PROFILES = [
-  { id: "julian", name: "Julian", color: "#22C55E", emoji: "🦖", theme: "dino" },
-  { id: "lieke", name: "Lieke", color: "#EC4899", emoji: "🦄", theme: "unicorn" },
+  { id: "julian", name: "Julian", color: "#22C55E", emoji: "🦖", theme: "dino", photo: "icons/avatars/julian.png" },
+  { id: "lieke", name: "Lieke", color: "#EC4899", emoji: "🦄", theme: "unicorn", photo: "icons/avatars/lieke.png" },
 ];
 
 // Accessoires voor de mascotte, ontgrendeld op puntendrempels.

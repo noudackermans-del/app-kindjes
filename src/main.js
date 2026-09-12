@@ -31,7 +31,9 @@ function showProfiles() {
         onClick: () => enterChild(p.id),
       },
       [
-        el("div", { class: "profile-mascot", html: mascotSVG({ color: p.color, level: getLevel(p.id), accessories: getAccessories(p.id), variant: theme.mascot }) }),
+        p.photo
+          ? el("img", { class: "profile-photo", src: p.photo, alt: p.name, loading: "eager" })
+          : el("div", { class: "profile-mascot", html: mascotSVG({ color: p.color, level: getLevel(p.id), accessories: getAccessories(p.id), variant: theme.mascot }) }),
         el("div", { class: "profile-name", text: p.name }),
         el("div", { class: "profile-theme", text: theme.label }),
       ]
@@ -67,7 +69,10 @@ function showHome(childId) {
 
   const header = el("div", { class: "home-header" }, [
     el("button", { class: "icon-btn", type: "button", text: "⇄", aria: { label: "ander kind" }, onClick: showProfiles }),
-    el("div", { class: "home-title", text: `Hoi ${profile.name}!` }),
+    el("div", { class: "home-title" }, [
+      profile.photo ? el("img", { class: "home-photo", src: profile.photo, alt: profile.name }) : null,
+      el("span", { text: `Hoi ${profile.name}!` }),
+    ]),
     el("button", {
       class: "icon-btn", type: "button", text: getSound() ? "🔊" : "🔇", aria: { label: "geluid" },
       onClick: (e) => { setSound(!getSound()); e.currentTarget.textContent = getSound() ? "🔊" : "🔇"; },

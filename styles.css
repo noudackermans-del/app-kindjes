@@ -88,12 +88,17 @@ button { font-family: inherit; cursor: pointer; border: none; }
 }
 .profile-card:active { transform: scale(0.97); }
 .profile-mascot { width: 130px; height: 130px; }
+.profile-photo {
+  width: 132px; height: 132px; border-radius: 50%; object-fit: cover;
+  border: 5px solid var(--pc, #fff); box-shadow: var(--shadow); background: #fff;
+}
 .profile-name { font-size: 1.6rem; font-weight: 800; }
 .profile-theme { font-size: 0.95rem; color: var(--muted); text-align: center; }
 
 /* ---------- Startscherm ---------- */
 .home-header { display: flex; align-items: center; gap: 12px; }
-.home-title { flex: 1; text-align: center; font-size: 1.5rem; font-weight: 800; }
+.home-title { flex: 1; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.5rem; font-weight: 800; }
+.home-photo { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); }
 
 .mascot-box { display: flex; flex-direction: column; align-items: center; margin: 10px 0; }
 .mascot { width: 160px; height: 168px; }
